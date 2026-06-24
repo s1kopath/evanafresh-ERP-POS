@@ -1,0 +1,26 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source './**/*.jsx';
+
+@theme {
+    --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial,
+        sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+
+    /* Evana Fresh brand palette (from the proposal) */
+    --color-brand-50: #eefaf2;
+    --color-brand-100: #d8f3e3;
+    --color-brand-200: #bfe9d1;
+    --color-brand-300: #93dcb3;
+    --color-brand-400: #4cc088;
+    --color-brand-500: #22a866;
+    --color-brand-600: #1b8a5a;
+    --color-brand-700: #176d4b;
+    --color-brand-800: #14543c;
+    --color-brand-900: #0f3d2e;
+
+    --color-amber-accent: #f59e0b;
+    --color-red-accent: #dc2626;
+    --color-blue-accent: #2563eb;
+}
