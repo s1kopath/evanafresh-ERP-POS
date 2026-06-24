@@ -32,6 +32,8 @@ P6 Ledgers · P7 Accounting · P8 Reports · P9 ZATCA · P10 Mobile · P11 Deplo
 - [ ] Branch-scoped data isolation (global scope + branch context)  ·P1
 - [ ] Branch switcher (owner/manager) in topbar  ·P1
 - [ ] Audit logs for all writes  ·P1
+- [ ] POS PIN per user (numeric, bcrypt) for terminal login  ·P1
+- [ ] POS device enrollment + trust registry (bind device → branch/terminal)  ·P1
 - [ ] Shared Inertia props: auth user, permissions, branches  ·P1
 
 ## Phase 2 — Master data & settings
@@ -42,6 +44,7 @@ P6 Ledgers · P7 Accounting · P8 Reports · P9 ZATCA · P10 Mobile · P11 Deplo
 - [ ] Barcode & QR generation + label preview  ·P2
 - [ ] Customer registration + credit limit + opening balance  ·P2
 - [ ] Supplier registration + opening balance  ·P2
+- [ ] Employee/staff records (salary, join date, branch, status) — feeds payroll  ·P2
 - [ ] Tax/VAT config (15%) + TRN + store header settings  ·P2
 - [ ] Opening-data CSV import  ·P2
 
@@ -82,13 +85,22 @@ P6 Ledgers · P7 Accounting · P8 Reports · P9 ZATCA · P10 Mobile · P11 Deplo
 - [ ] Refund management (cash refund or credit note)  ·P4
 - [ ] Return reason tracking & reporting  ·P4
 - [ ] Held / parked bills  ·P4
-### Offline (design spike first)
+### Offline — Electron desktop app (design spike first · full spec: [OFFLINE-POS.md](OFFLINE-POS.md))
+- [ ] Electron desktop build — installable executable (Windows/macOS), runs online + offline  ·P4
+- [ ] Client-rendered POS terminal (JSON API, no server round-trips) — same code both modes  ·P4
+- [ ] Local-first SQLite store on device (SQLCipher-encrypted), accessed via IPC  ·P4
+- [ ] Device enrollment (online, once) → trusted device key in OS keychain  ·P4
+- [ ] Offline login — POS PIN verified locally against synced roster  ·P4
+- [ ] Local signed session (role/permissions) + idle auto-logout  ·P4
+- [ ] Per-terminal document number ranges (offline-safe invoice numbering)  ·P4
 - [ ] Fully offline POS — identical interface/workflow  ·P4
 - [ ] All transaction types offline (sales, payments, returns, refunds)  ·P4
-- [ ] Secure local storage on device  ·P4
-- [ ] Automatic sync on reconnect (idempotent, no dupes)  ·P4
-- [ ] Conflict resolution for HQ stock/price changes  ·P4
+- [ ] Outbox + automatic sync on reconnect (idempotent, no dupes)  ·P4
+- [ ] Roster/catalogue pull-down sync + device revocation/wipe on reconnect  ·P4
+- [ ] Conflict resolution for HQ stock/price changes (negative-stock variance report)  ·P4
+- [ ] Max-offline TTL forces a sync before login when device dark too long  ·P4
 - [ ] Zero manual cashier intervention for sync  ·P4
+- [ ] Code-signed installers + auto-update (electron-updater)  ·P11
 
 ## Phase 5 — Purchasing & reorder
 ### Purchase management
@@ -170,6 +182,7 @@ P6 Ledgers · P7 Accounting · P8 Reports · P9 ZATCA · P10 Mobile · P11 Deplo
 - [ ] Encrypted automated daily backups  ·P11
 - [ ] SSL + RBAC review  ·P11
 - [ ] AES encryption at rest for sensitive fields  ·P11
+- [ ] SMS + email notification gateways (Twilio/SMTP) — wire the stubbed low-stock/near-expiry/alert channels  ·P11
 - [ ] Demo/seed data for the 8 demo scenarios  ·P11
 - [ ] UAT + go-live + hypercare  ·P11
 

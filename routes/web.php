@@ -33,17 +33,22 @@ Route::get('/', function () {
 // Operations
 Route::get('/pos', fn () => Inertia::render('Pos/Index'))->name('pos');
 Route::get('/inventory', fn () => Inertia::render('Inventory/Index'))->name('inventory');
+Route::get('/expiry', fn () => Inertia::render('Inventory/Expiry'))->name('expiry');
 Route::get('/purchasing', fn () => Inertia::render('Purchasing/Index'))->name('purchasing');
+Route::get('/reorder', fn () => Inertia::render('Purchasing/Reorder'))->name('reorder');
 
 // Finance
 Route::get('/ledgers/customers', fn () => Inertia::render('Ledgers/Customers'))->name('ledgers.customers');
 Route::get('/ledgers/suppliers', fn () => Inertia::render('Ledgers/Suppliers'))->name('ledgers.suppliers');
 Route::get('/accounting', fn () => Inertia::render('Accounting/Index'))->name('accounting');
+Route::get('/payroll', fn () => Inertia::render('Accounting/Payroll'))->name('payroll');
 
 // Insights
 Route::get('/reports', fn () => Inertia::render('Reports/Index'))->name('reports');
 
 // Admin
+Route::get('/master-data', fn () => Inertia::render('MasterData/Index'))->name('master-data');
+Route::get('/branches', fn () => Inertia::render('Branches/Index'))->name('branches');
 Route::get('/settings', fn () => Inertia::render('Settings/Index'))->name('settings');
 
 // Developer — living reference for the shared UI components (resources/js/Components/ui).

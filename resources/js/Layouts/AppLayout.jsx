@@ -14,7 +14,9 @@ const navSections = [
         items: [
             { label: 'POS Terminal', href: '/pos', icon: '🛒' },
             { label: 'Inventory', href: '/inventory', icon: '📦' },
+            { label: 'Expiry', href: '/expiry', icon: '⏳' },
             { label: 'Purchasing', href: '/purchasing', icon: '🚚' },
+            { label: 'Reorder', href: '/reorder', icon: '🔄' },
         ],
     },
     {
@@ -23,6 +25,7 @@ const navSections = [
             { label: 'Customer Ledger', href: '/ledgers/customers', icon: '🧾' },
             { label: 'Supplier Ledger', href: '/ledgers/suppliers', icon: '📒' },
             { label: 'Accounting', href: '/accounting', icon: '💰' },
+            { label: 'Payroll', href: '/payroll', icon: '👥' },
         ],
     },
     {
@@ -32,6 +35,8 @@ const navSections = [
     {
         section: 'Admin',
         items: [
+            { label: 'Master Data', href: '/master-data', icon: '🗂️' },
+            { label: 'Branches', href: '/branches', icon: '🏢' },
             { label: 'Settings', href: '/settings', icon: '⚙️' },
             { label: 'UI Kit', href: '/ui-kit', icon: '🧩' },
         ],

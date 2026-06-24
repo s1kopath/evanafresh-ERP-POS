@@ -14,7 +14,8 @@
 /.zed
 /auth.json
 /node_modules
-/public/build
+# ---- Allow build file for production static build file ----
+# /public/build
 /public/fonts-manifest.dev.json
 /public/hot
 /public/storage

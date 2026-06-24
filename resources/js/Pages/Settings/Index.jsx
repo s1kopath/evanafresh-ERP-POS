@@ -4,33 +4,40 @@ export default function SettingsIndex() {
     return (
         <ModuleStub
             title="Settings"
-            subtitle="Branches, users, products, tax & hardware"
+            subtitle="Users, tax/ZATCA, POS devices & notifications"
             icon="⚙️"
             phase="Phase 2"
-            summary="The foundation every other module builds on — stores, staff roles, the product catalogue, tax/ZATCA configuration, and POS hardware setup."
+            summary="System configuration the rest of the platform builds on — staff roles & PINs, tax/ZATCA compliance, POS device setup, and notification & backup channels. (Products, categories and parties live in Master Data.)"
             planned={[
                 {
-                    group: 'Organisation',
+                    group: 'Users & access',
                     items: [
-                        'Multiple stores / branches',
                         'Users & role-based access (owner, manager, accountant, cashier)',
+                        'Per-cashier POS PIN for terminal login',
                         'Full audit trail',
                     ],
                 },
                 {
-                    group: 'Catalogue',
-                    items: [
-                        'Products & categories with barcodes',
-                        'Units of measure incl. weight-based items',
-                        'Supplier & customer master data with opening balances',
-                    ],
-                },
-                {
-                    group: 'Compliance & devices',
+                    group: 'Tax & compliance',
                     items: [
                         'VAT / TRN configuration',
                         'ZATCA Phase-2 (FATOORA) device onboarding & credentials',
-                        'POS hardware: scanner, scale, thermal printer, cash drawer',
+                        'Store header / receipt settings',
+                    ],
+                },
+                {
+                    group: 'POS devices & hardware',
+                    items: [
+                        'POS device enrollment & trust registry (offline terminals)',
+                        'Per-terminal document number ranges',
+                        'Hardware: scanner, scale, thermal printer, cash drawer',
+                    ],
+                },
+                {
+                    group: 'Notifications & data',
+                    items: [
+                        'SMS & email gateways (low-stock / near-expiry alerts)',
+                        'Encrypted automated daily cloud backups',
                     ],
                 },
             ]}

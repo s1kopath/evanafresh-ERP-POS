@@ -10,6 +10,7 @@ reorder, customer/supplier ledgers, accounting, multi-branch management, reporti
 
 - **Feature catalog & progress (source of truth):** [docs/FEATURE-CHECKLIST.md](docs/FEATURE-CHECKLIST.md) — full feature list + tick state
 - **Build plan (phased, step-by-step):** [docs/DEVELOPMENT-PLAN.md](docs/DEVELOPMENT-PLAN.md)
+- **Offline POS architecture, sync contract & offline auth:** [docs/OFFLINE-POS.md](docs/OFFLINE-POS.md) — read before any Phase 4b work
 
 ## How to work each session
 1. Open `docs/FEATURE-CHECKLIST.md`, pick the next unchecked group (follow the
@@ -25,7 +26,8 @@ reorder, customer/supplier ledgers, accounting, multi-branch management, reporti
 - **Laravel 13.8** (PHP 8.3), **Inertia** (`inertiajs/inertia-laravel` v3).
 - **React 19** + `@inertiajs/react`, **Vite 8**, **Tailwind v4** (`@tailwindcss/vite`).
 - **DB:** SQLite for dev (`database/database.sqlite`); **MySQL** for production.
-  Offline POS uses a local store on the device (Phase 4b).
+  Offline POS ships as an **Electron desktop app** with a local (encrypted SQLite) store on
+  the device that syncs to the server; it runs the same online and offline (Phase 4b).
 - Frontend is **JavaScript / JSX — not TypeScript**.
 
 ## Run it
@@ -50,7 +52,7 @@ resources/js/app.jsx                            # Inertia client entry (page res
 resources/js/Layouts/AppLayout.jsx              # sidebar + topbar shell
 resources/js/Components/                         # NavLink, StatCard, ModuleStub, …
 resources/js/Pages/                              # Inertia pages (Dashboard + module stubs)
-docs/                                            # PROPOSAL, DEVELOPMENT-PLAN, FEATURE-CHECKLIST
+docs/                                            # DEVELOPMENT-PLAN, FEATURE-CHECKLIST, OFFLINE-POS
 ```
 
 ## Conventions
@@ -101,7 +103,9 @@ live reference of all of them.
 ## Hard product constraints — do not violate
 - **English only.** No Arabic, no RTL, no i18n scaffolding.
 - **ZATCA Phase-2** compliance for invoicing (B2C QR + B2B UBL 2.1 XML) — Phase 9.
-- **Offline-first POS** — sales must work with no internet and sync idempotently (Phase 4b).
+- **Offline-first POS** — shipped as an **Electron desktop app** (installable executable) that
+  runs identically online and offline; sales must work with no internet and sync idempotently
+  on reconnect (Phase 4b). Only the POS terminal is offline-capable; back-office stays web.
 - **Multi-branch** isolation + consolidation throughout.
 
 ## Decisions log
@@ -111,3 +115,9 @@ live reference of all of them.
 - Brand palette derived from the original proposal (green).
 - The proposal document, wireframe, and PDF were intentionally removed. The feature list now
   lives in `docs/FEATURE-CHECKLIST.md`. **Do not re-add proposal pages to the app.**
+- **Offline POS = Electron desktop app** (replaces the earlier PWA idea). The POS terminal
+  ships as an installable executable with a local-first, encrypted SQLite store, so the
+  cashier experience is identical online and offline; it syncs to the server on reconnect.
+  Consequence: build the **Phase 4a POS terminal client-rendered against a JSON API** (not a
+  server-round-trip Inertia page) so the same screen drops into the Electron app unchanged.
+  Back-office (admin/reports/accounting) stays web/Inertia and online-only.

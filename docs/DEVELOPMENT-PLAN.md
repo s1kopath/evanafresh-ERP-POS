@@ -36,6 +36,10 @@ System. Built **module by module**; each phase is a self-contained, shippable sl
 - **Frontend:** React 19 + Inertia React, Vite 8, Tailwind v4. JSX (no TypeScript).
 - **DB:** MySQL (prod) / SQLite (dev + offline POS local store).
 - **Auth:** session-based (Phase 1), RBAC via roles + permissions.
+- **POS desktop client:** the offline-capable POS terminal ships as an **Electron** app
+  (electron-vite + electron-builder, electron-updater for auto-update) bundling a local
+  SQLite store; it runs the same online and offline. Back-office (admin, reports, accounting)
+  stays web/Inertia and online-only. See Phase 4b.
 
 ### Core domain entities (target data model)
 ```
@@ -52,7 +56,8 @@ Company ─┬─ Branch ──┬─ Terminal (POS)
          ├─ StockMovement (single source of truth for every stock change)
          ├─ StockTransfer (inter-branch, request/approve)
          ├─ Account (chart of accounts) ── JournalEntry ── JournalLine
-         ├─ Expense, Payroll, CashbookEntry, BankAccount
+         ├─ Employee ── Payroll
+         ├─ Expense, CashbookEntry, BankAccount
          └─ AuditLog
 ```
 
@@ -86,11 +91,16 @@ Company ─┬─ Branch ──┬─ Terminal (POS)
 ### Phase 1 — Core platform: auth, RBAC, branches, audit
 **Why first:** everything else is branch-scoped and permission-gated.
 - **Data model:** `companies`, `branches`, `terminals`, extend `users` (`branch_id`,
-  `is_owner`), `roles`, `permissions`, `role_user`, `permission_role`, `audit_logs`.
+  `is_owner`, `pos_pin_hash`), `roles`, `permissions`, `role_user`, `permission_role`,
+  `pos_devices` (enrolled device registry: device id/key, branch/terminal, status, number range),
+  `audit_logs`.
 - **Backend:** auth (login/logout, session), policies/gates, roles seeding
   (owner, manager, accountant, cashier), a `BelongsToBranch` global scope + `current branch`
   resolver, an `AuditLog` observer/trait, an `Inertia` shared-prop for `auth.user` +
-  `permissions` + `branches`.
+  `permissions` + `branches`. Also seed the auth primitives the **offline POS** depends on:
+  a per-user **POS PIN** (numeric, bcrypt-hashed) and a **device enrollment** endpoint/registry —
+  the terminal verifies cashiers locally against the synced PIN hash (see Phase 4b /
+  [OFFLINE-POS.md](OFFLINE-POS.md)).
 - **Frontend:** Login page, branch switcher in topbar (owner/manager), `can()` helper
   for conditional UI, replace the placeholder avatar/branch chip with real data.
 - **Acceptance:** users log in; a cashier sees only their branch; owner switches branches;
@@ -102,15 +112,17 @@ Company ─┬─ Branch ──┬─ Terminal (POS)
 - **Data model:** `categories`, `units` (+ `unit_conversions`), `products`
   (barcode, sell price, tax, `is_weight_based`, reorder level), `product_branch`
   (per-branch min levels & price overrides), `customers` (credit limit, opening balance),
-  `suppliers` (opening balance), `tax_rates`, `settings` (store header, ZATCA TRN, thresholds).
+  `suppliers` (opening balance), `employees` (salary, join date, branch, status — feeds payroll),
+  `tax_rates`, `settings` (store header, ZATCA TRN, thresholds).
 - **Backend:** CRUD controllers + form requests + policies for each; barcode/QR
   generation; CSV import for opening data; opening-balance posting into ledgers.
 - **Frontend:** index/create/edit pages (reusable table + form components),
   barcode label preview, settings screens (replaces the Settings stub).
-- **Acceptance:** can create products/customers/suppliers, set per-branch min levels,
+- **Acceptance:** can create products/customers/suppliers/employees, set per-branch min levels,
   configure VAT/TRN and store header.
 - **Covers checklist:** product categorization, UoM + conversion, barcode/QR gen,
-  customer/supplier registration, credit-limit config, min-stock config, tax config.
+  customer/supplier registration, employee/staff records, credit-limit config, min-stock config,
+  tax config.
 
 ### Phase 3 — Inventory management (+ expiry)
 - **Data model:** `stock_movements` (source of truth), `stock_levels` (projection),
@@ -137,13 +149,39 @@ Company ─┬─ Branch ──┬─ Terminal (POS)
     credit note, end-of-day cash closing per terminal/branch, thermal-receipt payload
     (+ placeholder QR; real ZATCA QR in Phase 9).
   - **Frontend:** full POS terminal — fast item entry (barcode + search), weight entry,
-    cart, mixed-tender payment, hold/recall, returns, receipt print view.
-- **4b — Offline:**
-  - **Design first:** PWA shell, local store (IndexedDB or wa-sqlite), an outbox/sync
-    queue, idempotent server sync endpoint keyed by sale `uuid`, conflict reconciliation
-    for HQ price/stock changes, background auto-sync on reconnect.
-  - **Acceptance:** disconnect network → keep selling (all tender types, returns) →
-    reconnect → sales sync once, no dupes, ledgers/stock correct.
+    cart, mixed-tender payment, hold/recall, returns, receipt print view. **Build it
+    client-rendered against a JSON API (not a server-round-trip Inertia page)** so the exact
+    same terminal drops into the Electron offline app (4b) unchanged.
+- **4b — Offline (Electron desktop app):**
+  - **Packaging:** ship the POS terminal as an **Electron** desktop app (electron-vite build;
+    `electron-builder` installers for Windows/macOS; `electron-updater` auto-update). Cashiers
+    install and run one executable that works **both online and offline** — same UI either
+    way, no mode toggle.
+  - **Local-first store:** embedded **SQLite** in the Electron main process (`better-sqlite3`,
+    SQLCipher-encrypted at rest); the renderer reaches it over IPC. Every read/write hits the
+    local store first, so the terminal never blocks on the network.
+  - **Sync engine:** an **outbox** of pending mutations (sales, payments, returns) keyed by the
+    sale `uuid`; a background worker flushes to an idempotent Laravel JSON sync endpoint and
+    pulls HQ product/price/stock deltas. Connectivity is auto-detected (heartbeat); sync is
+    automatic on reconnect — zero cashier intervention.
+  - **Conflict resolution:** HQ catalogue/price/stock changes made during the offline window
+    reconcile cleanly on sync (HQ wins for catalogue/price; sales are append-only and never lost).
+  - **Offline auth:** the device is **enrolled once while online** (a manager logs in; the server
+    registers the device to a branch/terminal and issues a device key). Thereafter cashiers log
+    in with a **numeric POS PIN verified locally** against the synced, bcrypt-hashed roster — no
+    server call needed. A signed local session carries the cashier's role/permissions into each
+    sale. Revocation and roster/PIN changes propagate on the next sync; a **max-offline TTL**
+    forces a sync before login if the device has been dark too long. Stolen-device risk is
+    bounded by SQLCipher encryption + remote revoke/wipe.
+  - **Numbering:** each terminal draws invoice numbers from a **reserved per-terminal range** so
+    offline sales get valid, collision-free numbers (also the correct ZATCA per-device counter
+    model — Phase 9).
+  - **Reuse:** because the 4a terminal is already client-rendered against a JSON API, 4b only
+    swaps that API client for the local-first store + sync — the screen code is unchanged.
+  - **Acceptance:** enroll online → go offline → log in by PIN → keep selling (all tender types,
+    returns) → reconnect → sales sync once, no dupes, ledgers/stock/audit correct; revoke the
+    device → it wipes & refuses login; ship a new build → the app auto-updates.
+  - **Full design + sync-endpoint contract + offline-auth spec:** [OFFLINE-POS.md](OFFLINE-POS.md).
 - **Covers checklist:** all POS & Sales items (incl. the offline block).
 - **Risk:** offline + sync is the biggest technical risk → schedule a dedicated design
   spike at the start of 4b.
@@ -174,10 +212,11 @@ Company ─┬─ Branch ──┬─ Terminal (POS)
 
 ### Phase 7 — Accounting & finance
 - **Data model:** `accounts` (chart of accounts), `journal_entries` (+`journal_lines`,
-  double-entry), `expenses`, `payrolls`, `cashbook_entries`, `bank_accounts`,
-  `bank_reconciliations`.
+  double-entry), `expenses`, `payrolls` (per `employee` from Phase 2), `cashbook_entries`,
+  `bank_accounts`, `bank_reconciliations`.
 - **Backend:** GL postings auto-generated from sales/purchases/payments, expense &
-  payroll entry, daily cash book + cash closing, bank reconciliation, financial statement
+  payroll entry (monthly run over active employees), daily cash book + cash closing,
+  bank reconciliation, financial statement
   builders: Trial Balance, P&L (month/quarter/year), Balance Sheet, Cash Flow,
   AR/AP aging, consolidated multi-branch.
 - **Frontend:** chart of accounts, expense/payroll/cashbook screens, statements
@@ -209,12 +248,17 @@ Company ─┬─ Branch ──┬─ Terminal (POS)
 - Android + iOS app (owner/management roles): real-time sales & inventory monitoring,
   approve POs and stock transfers, dashboards. Reuses the same Laravel API (expose a
   token-auth API surface). Decide React Native vs PWA install at phase start.
+- **Distinct from the Phase 4b Electron desktop app**, which is the cashier POS station
+  (offline-capable). This mobile app is owner/management monitoring and is online-only.
 - **Covers checklist:** all Mobile & Cloud Access app items.
 
 ### Phase 11 — Hardening, backup, deployment, hypercare
 - Cloud deploy (client-provided hosting), automated **encrypted daily backups**, SSL,
-  RBAC review, AES encryption at rest for sensitive fields, performance passes, seed/demo
-  data for the 8 demo scenarios, UAT, go-live + hypercare.
+  RBAC review, AES encryption at rest for sensitive fields, **SMS + email notification
+  gateways** (Twilio/SMTP) to wire the low-stock / near-expiry / alert channels stubbed in
+  Phase 3, **code-signed Electron POS installers + an electron-updater release feed**
+  (with the local POS store SQLCipher-encrypted), performance passes, seed/demo data for the
+  8 demo scenarios, UAT, go-live + hypercare.
 
 ---
 
