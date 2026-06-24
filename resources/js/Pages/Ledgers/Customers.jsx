@@ -1,0 +1,35 @@
+import ModuleStub from '@/Components/ModuleStub';
+
+export default function CustomersLedger() {
+    return (
+        <ModuleStub
+            title="Customer Ledger"
+            subtitle="Credit sales, dues & collections"
+            icon="🧾"
+            phase="Phase 6"
+            summary="A running account for every credit customer: invoices raised at the till, payments collected against outstanding dues, and printable statements with the live balance."
+            planned={[
+                {
+                    group: 'Balances',
+                    items: [
+                        'Per-customer ledger with running balance',
+                        'Credit sales & outstanding balance tracking',
+                        'Credit limits enforced at POS',
+                    ],
+                },
+                {
+                    group: 'Collections',
+                    items: [
+                        'Due collection process with printed receipt',
+                        'Partial payment management',
+                    ],
+                },
+                {
+                    group: 'Statements',
+                    items: ['Customer statements (PDF / print) for any date range'],
+                },
+            ]}
+            scenarios={['Customer due collection', 'Complete customer ledger & statement']}
+        />
+    );
+}

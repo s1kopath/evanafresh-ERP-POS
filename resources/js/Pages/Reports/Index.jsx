@@ -1,0 +1,33 @@
+import ModuleStub from '@/Components/ModuleStub';
+
+export default function ReportsIndex() {
+    return (
+        <ModuleStub
+            title="Reports & Analytics"
+            subtitle="Sales, profitability & branch performance"
+            icon="📈"
+            phase="Phase 8"
+            summary="Drillable, exportable insight across the business — sales over time, product profitability, best-selling vs. slow movers, and branch-by-branch performance."
+            planned={[
+                {
+                    group: 'Sales',
+                    items: [
+                        'Daily / weekly / monthly sales',
+                        'Best-selling & slow-moving products',
+                    ],
+                },
+                {
+                    group: 'Profitability',
+                    items: [
+                        'Product profitability',
+                        'Branch-wise performance',
+                    ],
+                },
+                {
+                    group: 'Output',
+                    items: ['Export to PDF & Excel', 'Individual & consolidated reporting'],
+                },
+            ]}
+        />
+    );
+}
