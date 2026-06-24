@@ -25,16 +25,16 @@ P6 Ledgers · P7 Accounting · P8 Reports · P9 ZATCA · P10 Mobile · P11 Deplo
 - [x] `/ui-kit` living component reference page
 
 ## Phase 1 — Core platform: auth, RBAC, branches, audit
-- [ ] Login / logout (session auth)  ·P1
-- [ ] Roles: owner, manager, accountant, cashier  ·P1
-- [ ] Permissions + policy gates + `can()` UI helper  ·P1
-- [ ] Companies & branches model  ·P1
-- [ ] Branch-scoped data isolation (global scope + branch context)  ·P1
-- [ ] Branch switcher (owner/manager) in topbar  ·P1
-- [ ] Audit logs for all writes  ·P1
-- [ ] POS PIN per user (numeric, bcrypt) for terminal login  ·P1
+- [x] Login / logout (session auth)  ·P1
+- [x] Roles: owner, manager, accountant, cashier  ·P1
+- [x] Permissions + `can()` UI helper (per-permission, owner bypass)  ·P1
+- [x] Companies & branches model  ·P1
+- [x] Branch-scoped data isolation (global scope + branch context)  ·P1
+- [x] Branch switcher (owner) in topbar  ·P1
+- [~] Audit logs (login/logout/branch-switch + `Auditable` trait; applies to business writes as modules land)  ·P1
+- [x] POS PIN per user (numeric, bcrypt) for terminal login  ·P1
 - [ ] POS device enrollment + trust registry (bind device → branch/terminal)  ·P1
-- [ ] Shared Inertia props: auth user, permissions, branches  ·P1
+- [x] Shared Inertia props: auth user, permissions, branches  ·P1
 
 ## Phase 2 — Master data & settings
 - [ ] Product categories (grocery, dairy, produce, frozen, beverages, …)  ·P2
