@@ -9,6 +9,13 @@ this doc is the *how*. It is the reference for the design spike that opens Phase
 > Laravel server whenever the server is reachable. There is no "online mode" vs "offline
 > mode" — only local-first, with sync running (or not) in the background.
 
+> **Spike status (server side — DONE):** the sync contract in §10–§11 is built and proven:
+> device enrollment + token auth (`pos_devices`), heartbeat, pull (roster + bcrypt PIN verifier),
+> and idempotent push (`sales` keyed by `uuid`). Covered by `tests/Feature/PosSyncTest.php` and a
+> headless round-trip harness `desktop/spike/sync-harness.mjs` (enroll → offline sale → push →
+> idempotent re-push). **Remaining:** the Electron shell, local SQLite store, and the on-device
+> `posApi` implementation (§3).
+
 ---
 
 ## 1. Principle: local-first, single-path

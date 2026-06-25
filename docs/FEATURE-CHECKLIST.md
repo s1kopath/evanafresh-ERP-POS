@@ -33,7 +33,7 @@ P6 Ledgers · P7 Accounting · P8 Reports · P9 ZATCA · P10 Mobile · P11 Deplo
 - [x] Branch switcher (owner) in topbar  ·P1
 - [~] Audit logs (login/logout/branch-switch + `Auditable` trait; applies to business writes as modules land)  ·P1
 - [x] POS PIN per user (numeric, bcrypt) for terminal login  ·P1
-- [ ] POS device enrollment + trust registry (bind device → branch/terminal)  ·P1
+- [x] POS device enrollment + trust registry (token auth + revoke; bind device → branch/terminal)  ·P1
 - [x] Shared Inertia props: auth user, permissions, branches  ·P1
 
 ## Phase 2 — Master data & settings
@@ -86,17 +86,20 @@ P6 Ledgers · P7 Accounting · P8 Reports · P9 ZATCA · P10 Mobile · P11 Deplo
 - [ ] Return reason tracking & reporting  ·P4
 - [ ] Held / parked bills  ·P4
 ### Offline — Electron desktop app (design spike first · full spec: [OFFLINE-POS.md](OFFLINE-POS.md))
+> **Spike done (server side):** sync contract — enroll, heartbeat, pull (roster + bcrypt PIN verifier),
+> idempotent push — built and proven by `tests/Feature/PosSyncTest.php` (23 tests) + a headless
+> round-trip harness (`desktop/spike/sync-harness.mjs`). Remaining: the Electron shell + local SQLite client.
 - [ ] Electron desktop build — installable executable (Windows/macOS), runs online + offline  ·P4
 - [ ] Client-rendered POS terminal (JSON API, no server round-trips) — same code both modes  ·P4
 - [ ] Local-first SQLite store on device (SQLCipher-encrypted), accessed via IPC  ·P4
-- [ ] Device enrollment (online, once) → trusted device key in OS keychain  ·P4
-- [ ] Offline login — POS PIN verified locally against synced roster  ·P4
+- [~] Device enrollment (online, once) → trusted device key in OS keychain  ·P4
+- [~] Offline login — POS PIN verified locally against synced roster  ·P4
 - [ ] Local signed session (role/permissions) + idle auto-logout  ·P4
-- [ ] Per-terminal document number ranges (offline-safe invoice numbering)  ·P4
+- [~] Per-terminal document number ranges (offline-safe invoice numbering)  ·P4
 - [ ] Fully offline POS — identical interface/workflow  ·P4
 - [ ] All transaction types offline (sales, payments, returns, refunds)  ·P4
-- [ ] Outbox + automatic sync on reconnect (idempotent, no dupes)  ·P4
-- [ ] Roster/catalogue pull-down sync + device revocation/wipe on reconnect  ·P4
+- [~] Outbox + automatic sync on reconnect (idempotent, no dupes)  ·P4
+- [~] Roster/catalogue pull-down sync + device revocation/wipe on reconnect  ·P4
 - [ ] Conflict resolution for HQ stock/price changes (negative-stock variance report)  ·P4
 - [ ] Max-offline TTL forces a sync before login when device dark too long  ·P4
 - [ ] Zero manual cashier intervention for sync  ·P4

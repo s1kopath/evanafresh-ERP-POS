@@ -1,0 +1,137 @@
+{
+  "device": {
+    "token": "rcS0PQkDkS3FbnHGo0w0ZQkkW4DrBBVb206jimqfHllGiLAx",
+    "branch": {
+      "id": 1,
+      "name": "Jeddah — Al Salamah",
+      "code": "B1"
+    },
+    "terminal": {
+      "id": 1,
+      "name": "Register 1",
+      "code": "T1",
+      "number_prefix": "B1-T1"
+    }
+  },
+  "readModel": {
+    "roster": [
+      {
+        "user_id": 1,
+        "name": "Aisha Owner",
+        "role": "owner",
+        "permissions": [
+          "accounting.manage",
+          "accounting.view",
+          "branches.manage",
+          "expiry.view",
+          "inventory.adjust",
+          "inventory.transfer",
+          "inventory.view",
+          "ledgers.collect",
+          "ledgers.view",
+          "masterdata.manage",
+          "payroll.manage",
+          "pos.close",
+          "pos.return",
+          "pos.sell",
+          "purchasing.manage",
+          "purchasing.view",
+          "reorder.view",
+          "reports.view",
+          "settings.manage",
+          "users.manage"
+        ],
+        "pos_pin_hash": "$2y$12$gkAqUsO5brHxnghGfW/jbOeLSDNvZi.esw52I3ftDl3P9wm4j8dA6",
+        "status": "active"
+      },
+      {
+        "user_id": 2,
+        "name": "Omar Manager",
+        "role": "manager",
+        "permissions": [
+          "pos.sell",
+          "pos.return",
+          "pos.close",
+          "inventory.view",
+          "inventory.adjust",
+          "inventory.transfer",
+          "expiry.view",
+          "purchasing.view",
+          "purchasing.manage",
+          "reorder.view",
+          "ledgers.view",
+          "ledgers.collect",
+          "reports.view",
+          "masterdata.manage"
+        ],
+        "pos_pin_hash": "$2y$12$9TJoHUVMKEX6sxe1v5IEYOM.p7Jy214Hr/ypDz9sW4CJ836YQZ0Ke",
+        "status": "active"
+      },
+      {
+        "user_id": 3,
+        "name": "Sara Accountant",
+        "role": "accountant",
+        "permissions": [
+          "accounting.view",
+          "accounting.manage",
+          "payroll.manage",
+          "ledgers.view",
+          "ledgers.collect",
+          "purchasing.view",
+          "reports.view"
+        ],
+        "pos_pin_hash": "$2y$12$LMyBf.XnQ7np/lrmTKkLw.lwFhmKhWw6p8JN5Z2EScCfSdSbBCpGu",
+        "status": "active"
+      },
+      {
+        "user_id": 4,
+        "name": "Yusuf Cashier",
+        "role": "cashier",
+        "permissions": [
+          "pos.sell",
+          "pos.return"
+        ],
+        "pos_pin_hash": "$2y$12$PVhBYjRj5g9TPO/6Gjz4h.EM5VRsUBa3LXmpuAEs1ji1v8oP31rdK",
+        "status": "active"
+      }
+    ],
+    "catalogue": [],
+    "cursor": "2026-06-25T03:44:54+00:00"
+  },
+  "outbox": [],
+  "synced": [
+    {
+      "uuid": "ffdb0d35-5ee1-464a-a237-d5d5e1be4650",
+      "type": "sale",
+      "payload": {
+        "number": "B1-T1-000001",
+        "cashier_id": 4,
+        "subtotal_minor": 1850,
+        "vat_minor": 278,
+        "total_minor": 2128,
+        "sold_at": "2026-01-01T00:00:00.000Z",
+        "lines": [
+          {
+            "name": "Bananas (1.2kg)",
+            "qty": 1.2,
+            "unit_price_minor": 700,
+            "line_total_minor": 840
+          },
+          {
+            "name": "Laban 1L",
+            "barcode": "6281000123457",
+            "qty": 2,
+            "unit_price_minor": 505,
+            "line_total_minor": 1010
+          }
+        ],
+        "payments": [
+          {
+            "method": "cash",
+            "amount_minor": 2128
+          }
+        ]
+      }
+    }
+  ]
+}
