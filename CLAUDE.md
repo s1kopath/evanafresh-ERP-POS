@@ -11,6 +11,7 @@ reorder, customer/supplier ledgers, accounting, multi-branch management, reporti
 - **Feature catalog & progress (source of truth):** [docs/FEATURE-CHECKLIST.md](docs/FEATURE-CHECKLIST.md) — full feature list + tick state
 - **Build plan (phased, step-by-step):** [docs/DEVELOPMENT-PLAN.md](docs/DEVELOPMENT-PLAN.md)
 - **Offline POS architecture, sync contract & offline auth:** [docs/OFFLINE-POS.md](docs/OFFLINE-POS.md) — read before any Phase 4b work
+- **Build & deployment (web + Electron desktop installers):** [docs/BUILD-AND-DEPLOY.md](docs/BUILD-AND-DEPLOY.md)
 
 ## How to work each session
 1. Open `docs/FEATURE-CHECKLIST.md`, pick the next unchecked group (follow the
@@ -52,7 +53,8 @@ resources/js/app.jsx                            # Inertia client entry (page res
 resources/js/Layouts/AppLayout.jsx              # sidebar + topbar shell
 resources/js/Components/                         # NavLink, StatCard, ModuleStub, …
 resources/js/Pages/                              # Inertia pages (Dashboard + module stubs)
-docs/                                            # DEVELOPMENT-PLAN, FEATURE-CHECKLIST, OFFLINE-POS
+docs/                                            # DEVELOPMENT-PLAN, FEATURE-CHECKLIST, OFFLINE-POS, BUILD-AND-DEPLOY
+desktop/                                         # Electron offline POS terminal (see desktop/README.md)
 ```
 
 ## Conventions

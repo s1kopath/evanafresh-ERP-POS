@@ -253,6 +253,7 @@ Company ─┬─ Branch ──┬─ Terminal (POS)
 - **Covers checklist:** all Mobile & Cloud Access app items.
 
 ### Phase 11 — Hardening, backup, deployment, hypercare
+**Build & deploy steps for both apps live in [BUILD-AND-DEPLOY.md](BUILD-AND-DEPLOY.md).**
 - Cloud deploy (client-provided hosting), automated **encrypted daily backups**, SSL,
   RBAC review, AES encryption at rest for sensitive fields, **SMS + email notification
   gateways** (Twilio/SMTP) to wire the low-stock / near-expiry / alert channels stubbed in

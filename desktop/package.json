@@ -1,0 +1,29 @@
+{
+    "name": "evana-pos-desktop",
+    "version": "0.1.0",
+    "private": true,
+    "description": "Evana Fresh offline-first POS terminal (Electron)",
+    "main": "./out/main/index.js",
+    "author": "Evana Fresh",
+    "scripts": {
+        "dev": "electron-vite dev",
+        "build": "electron-vite build",
+        "preview": "electron-vite preview",
+        "dist": "electron-vite build && electron-builder",
+        "test": "node --test test/",
+        "postinstall": "electron-builder install-app-deps"
+    },
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "better-sqlite3": "^11.8.1"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-react": "^4.3.4",
+        "electron": "^31.7.0",
+        "electron-builder": "^24.13.3",
+        "electron-vite": "^2.3.0",
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0",
+        "vite": "^5.4.11"
+    }
+}

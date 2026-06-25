@@ -1,0 +1,22 @@
+appId: com.evanafresh.pos
+productName: Evana Fresh POS
+directories:
+  output: dist
+  buildResources: build
+files:
+  - out/**/*
+  - package.json
+# Native modules (better-sqlite3) are unpacked from the asar so they load at runtime.
+asarUnpack:
+  - "**/node_modules/better-sqlite3/**"
+win:
+  target: nsis
+mac:
+  target: dmg
+  category: public.app-category.business
+linux:
+  target: AppImage
+# Auto-update feed (electron-updater) — point at your release host before publishing.
+# publish:
+#   provider: generic
+#   url: https://updates.evanafresh.example/pos/

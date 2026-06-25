@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Evana Fresh POS</title>
+    <style>
+        :root { --brand:#1b8a5a; --brand-d:#0f3d2e; --ink:#1e293b; --muted:#64748b; --line:#e2e8f0; }
+        * { box-sizing: border-box; }
+        body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color: var(--ink); background:#f1f5f9; }
+        button { font: inherit; cursor: pointer; }
+        .center { min-height:100vh; display:flex; align-items:center; justify-content:center; background:var(--brand-d); }
+        .card { background:#fff; border-radius:16px; padding:28px; width:360px; box-shadow:0 20px 50px rgba(0,0,0,.25); }
+        .card h1 { font-size:18px; margin:0 0 4px; color:var(--brand-d); }
+        .card p.sub { margin:0 0 18px; color:var(--muted); font-size:13px; }
+        label { display:block; font-size:12px; font-weight:600; color:#475569; margin:10px 0 4px; }
+        input { width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:10px; font-size:14px; }
+        .btn { width:100%; padding:11px; border:0; border-radius:10px; background:var(--brand); color:#fff; font-weight:700; margin-top:16px; }
+        .btn:disabled { opacity:.6; }
+        .err { color:#dc2626; font-size:13px; margin-top:10px; min-height:18px; }
+        .pin { letter-spacing:.5em; text-align:center; font-size:22px; }
+        .pad { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:14px; }
+        .pad button { padding:16px; border:1px solid var(--line); border-radius:12px; background:#f8fafc; font-size:18px; font-weight:700; }
+        /* POS */
+        .pos { display:grid; grid-template-columns:1fr 360px; height:100vh; }
+        .grid { padding:18px; display:grid; grid-template-columns:repeat(3,1fr); gap:12px; align-content:start; overflow:auto; }
+        .prod { border:1px solid var(--line); background:#fff; border-radius:14px; padding:16px; text-align:left; }
+        .prod b { display:block; font-size:14px; }
+        .prod span { color:var(--muted); font-size:13px; }
+        .cart { background:#fff; border-left:1px solid var(--line); display:flex; flex-direction:column; }
+        .cart .top { padding:14px 16px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:8px; }
+        .cart .items { flex:1; overflow:auto; padding:8px 16px; }
+        .row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f1f5f9; font-size:14px; }
+        .cart .foot { padding:16px; border-top:1px solid var(--line); }
+        .tot { display:flex; justify-content:space-between; font-weight:800; font-size:18px; margin:6px 0 12px; }
+        .pill { font-size:11px; font-weight:700; padding:3px 8px; border-radius:999px; }
+        .on { background:#dcfce7; color:#166534; } .off { background:#fef9c3; color:#854d0e; }
+        .ghost { background:#f1f5f9; color:#334155; border:1px solid var(--line); border-radius:10px; padding:8px 10px; font-weight:600; }
+        .muted { color:var(--muted); font-size:12px; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="module" src="./main.jsx"></script>
+</body>
+</html>
