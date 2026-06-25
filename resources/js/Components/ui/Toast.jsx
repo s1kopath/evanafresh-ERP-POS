@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { usePage } from '@inertiajs/react';
+import { Check, Info, TriangleAlert, X } from 'lucide-react';
 import { cn } from '@/lib/cn';
 
 const ToastContext = createContext(null);
@@ -83,10 +84,10 @@ export function useFlashToasts() {
 }
 
 const TYPES = {
-    success: { icon: '✓', ring: 'border-green-200', dot: 'bg-green-500', text: 'text-green-800' },
-    error: { icon: '!', ring: 'border-red-200', dot: 'bg-red-500', text: 'text-red-800' },
-    warning: { icon: '!', ring: 'border-amber-200', dot: 'bg-amber-500', text: 'text-amber-800' },
-    info: { icon: 'i', ring: 'border-blue-200', dot: 'bg-blue-500', text: 'text-blue-800' },
+    success: { Icon: Check, ring: 'border-green-200', dot: 'bg-green-500', text: 'text-green-800' },
+    error: { Icon: X, ring: 'border-red-200', dot: 'bg-red-500', text: 'text-red-800' },
+    warning: { Icon: TriangleAlert, ring: 'border-amber-200', dot: 'bg-amber-500', text: 'text-amber-800' },
+    info: { Icon: Info, ring: 'border-blue-200', dot: 'bg-blue-500', text: 'text-blue-800' },
 };
 
 function ToastViewport({ toasts, onDismiss }) {
@@ -111,11 +112,11 @@ function ToastItem({ toast, onDismiss }) {
         >
             <span
                 className={cn(
-                    'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[11px] font-bold text-white',
+                    'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-white',
                     style.dot,
                 )}
             >
-                {style.icon}
+                <style.Icon className="h-3 w-3" strokeWidth={3} />
             </span>
             <div className="min-w-0 flex-1">
                 {toast.title && <div className={cn('text-sm font-semibold', style.text)}>{toast.title}</div>}
@@ -126,7 +127,7 @@ function ToastItem({ toast, onDismiss }) {
                 className="-mr-1 shrink-0 text-slate-400 hover:text-slate-600"
                 aria-label="Dismiss"
             >
-                ✕
+                <X className="h-4 w-4" />
             </button>
         </div>
     );

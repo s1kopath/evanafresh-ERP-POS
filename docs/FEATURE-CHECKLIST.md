@@ -36,17 +36,23 @@ P6 Ledgers · P7 Accounting · P8 Reports · P9 ZATCA · P10 Mobile · P11 Deplo
 - [x] POS device enrollment + trust registry (token auth + revoke; bind device → branch/terminal)  ·P1
 - [x] Shared Inertia props: auth user, permissions, branches  ·P1
 
-## Phase 2 — Master data & settings
-- [ ] Product categories (grocery, dairy, produce, frozen, beverages, …)  ·P2
-- [ ] Units of measurement + conversions (kg, g, pcs, box, …)  ·P2
-- [ ] Products (barcode, price, tax, weight-based flag, reorder level)  ·P2
-- [ ] Per-branch min stock levels & price overrides  ·P2
-- [ ] Barcode & QR generation + label preview  ·P2
-- [ ] Customer registration + credit limit + opening balance  ·P2
-- [ ] Supplier registration + opening balance  ·P2
-- [ ] Employee/staff records (salary, join date, branch, status) — feeds payroll  ·P2
-- [ ] Tax/VAT config (15%) + TRN + store header settings  ·P2
-- [ ] Opening-data CSV import  ·P2
+## Phase 2 — Master data & settings ✅
+- [x] Product categories (grocery, dairy, produce, frozen, beverages, …)  ·P2
+- [x] Units of measurement + conversions (kg, g, pcs, box, …)  ·P2
+- [x] Products (barcode, price, tax, weight-based flag, reorder level)  ·P2
+- [x] Per-branch min stock levels & price overrides  ·P2
+- [x] Barcode & QR generation + label preview  ·P2
+- [x] Customer registration + credit limit + opening balance  ·P2
+- [x] Supplier registration + opening balance  ·P2
+- [x] Employee/staff records (salary, join date, branch, status) — feeds payroll  ·P2
+- [x] Tax/VAT config (15%) + TRN + store header settings  ·P2
+- [x] Opening-data CSV import (products / customers / suppliers)  ·P2
+- [x] Product images — optimized WebP upload (GD) + graceful fallback placeholder  ·P2
+
+> **Phase 2 also delivered (UX / infra, not on the original list):** `lucide-react` icon system
+> (no emoji — hard rule), themed scrollbars, mobile-responsive tables/forms, lazy-loaded page
+> bundles, scoped label printing with a multi-copy print queue, the `BelongsToCompany` scope,
+> the `Money` helper, and server-side `can:` permission gates (`Gate::before`).
 
 ## Phase 3 — Inventory management
 - [ ] Real-time stock monitoring across branches (central dashboard)  ·P3

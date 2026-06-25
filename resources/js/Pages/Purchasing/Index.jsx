@@ -5,7 +5,7 @@ export default function PurchasingIndex() {
         <ModuleStub
             title="Purchasing"
             subtitle="Purchase entry, returns & automatic reordering"
-            icon="🚚"
+            icon="purchasing"
             phase="Phase 5"
             summary="Record supplier bills (with partial payment to the supplier ledger), handle purchase returns, track price history, and auto-generate reorder lists from minimum levels and sales trends."
             planned={[

@@ -42,7 +42,10 @@ composer install --no-dev --optimize-autoloader
 # 3. Database (MySQL in prod)
 php artisan migrate --force
 
-# 4. Framework caches (config + route + view + event)
+# 4. Public storage symlink (serves uploaded product images at /storage)
+php artisan storage:link
+
+# 5. Framework caches (config + route + view + event)
 php artisan optimize
 ```
 
@@ -59,7 +62,8 @@ php artisan optimize
 
 ### Redeploy checklist
 `git pull` → `composer install --no-dev -o` → `npm ci && npm run build` →
-`php artisan migrate --force` → `php artisan optimize` → restart queue workers.
+`php artisan migrate --force` → `php artisan storage:link` (idempotent) →
+`php artisan optimize` → restart queue workers.
 
 ---
 
@@ -164,7 +168,7 @@ the "Redeploy checklist" above wired into your host's pipeline.
 
 ## Release checklist (per ship)
 
-- [ ] Web: `npm run build` + `composer install --no-dev -o` + `migrate --force` + `optimize`; workers restarted; `public/hot` absent.
+- [ ] Web: `npm run build` + `composer install --no-dev -o` + `migrate --force` + `storage:link` + `optimize`; workers restarted; `public/hot` absent.
 - [ ] Desktop: version bumped; `npm test` green; installers built per-OS (or via CI); signed & notarized.
 - [ ] Desktop points at the **production** API URL, not localhost.
 - [ ] Encrypted backups verified (Phase 11); SSL valid.

@@ -5,7 +5,7 @@ export default function SuppliersLedger() {
         <ModuleStub
             title="Supplier Ledger"
             subtitle="Purchases, payments & ageing"
-            icon="📒"
+            icon="ledger-supplier"
             phase="Phase 6"
             summary="A complete account per supplier: purchases, payments and returns with a running balance, ageing analysis of what is due, and printable statements."
             planned={[

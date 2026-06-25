@@ -164,7 +164,7 @@ export default function UiKit() {
 
             <Section title="Empty state" description="For lists with no data">
                 <EmptyState
-                    icon="🛒"
+                    icon="pos"
                     title="No sales yet today"
                     description="Completed sales will appear here as cashiers ring them up."
                     action={<Button size="sm">New sale</Button>}

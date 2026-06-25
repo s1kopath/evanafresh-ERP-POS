@@ -1,12 +1,13 @@
 import { Link } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
 import StatCard from '@/Components/StatCard';
+import Icon from '@/Components/Icon';
 
 const quickActions = [
-    { label: 'New Sale', href: '/pos', icon: '🛒', desc: 'Open the POS terminal' },
-    { label: 'Record Purchase', href: '/purchasing', icon: '🚚', desc: 'Enter a supplier bill' },
-    { label: 'Collect Due', href: '/ledgers/customers', icon: '🧾', desc: 'Receive a customer payment' },
-    { label: 'Reorder List', href: '/inventory', icon: '📦', desc: 'Low-stock & reorder' },
+    { label: 'New Sale', href: '/pos', icon: 'pos', desc: 'Open the POS terminal' },
+    { label: 'Record Purchase', href: '/purchasing', icon: 'purchasing', desc: 'Enter a supplier bill' },
+    { label: 'Collect Due', href: '/ledgers/customers', icon: 'ledger-customer', desc: 'Receive a customer payment' },
+    { label: 'Reorder List', href: '/inventory', icon: 'inventory', desc: 'Low-stock & reorder' },
 ];
 
 const demoScenarios = [
@@ -52,8 +53,8 @@ export default function Dashboard({ kpis = [], currency = 'SAR' }) {
                                 href={a.href}
                                 className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:border-brand-300 hover:shadow"
                             >
-                                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-xl">
-                                    {a.icon}
+                                <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
+                                    <Icon name={a.icon} className="h-5 w-5" />
                                 </span>
                                 <span>
                                     <span className="block text-sm font-semibold text-brand-900">{a.label}</span>

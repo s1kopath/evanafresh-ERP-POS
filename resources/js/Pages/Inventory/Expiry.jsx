@@ -5,7 +5,7 @@ export default function ExpiryIndex() {
         <ModuleStub
             title="Expiry Management"
             subtitle="Near-expiry alerts & clearance for perishables"
-            icon="⏳"
+            icon="expiry"
             phase="Phase 3"
             summary="Track expiry from goods receipt through clearance — flag near-expiry stock early, push clearance discounts, and keep spoilage off the shelf and out of the P&L."
             planned={[

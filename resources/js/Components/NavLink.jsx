@@ -1,4 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
+import Icon from '@/Components/Icon';
 
 export default function NavLink({ href, icon, label, exact = false }) {
     const { url } = usePage();
@@ -14,7 +15,7 @@ export default function NavLink({ href, icon, label, exact = false }) {
                     : 'text-brand-100/80 hover:bg-brand-800/60 hover:text-white')
             }
         >
-            <span className="text-base leading-none">{icon}</span>
+            <Icon name={icon} className="h-4.5 w-4.5 shrink-0" />
             <span>{label}</span>
         </Link>
     );

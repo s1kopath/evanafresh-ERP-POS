@@ -1,44 +1,36 @@
-import ModuleStub from '@/Components/ModuleStub';
+import { Link } from '@inertiajs/react';
+import AppLayout from '@/Layouts/AppLayout';
+import MasterDataTabs from '@/Components/MasterDataTabs';
+import Icon from '@/Components/Icon';
+import { formatNumber } from '@/lib/format';
 
-export default function MasterDataIndex() {
+export default function MasterDataIndex({ sections = [] }) {
     return (
-        <ModuleStub
-            title="Master Data"
-            subtitle="Products, categories, units, customers & suppliers"
-            icon="🗂️"
-            phase="Phase 2"
-            summary="The catalogue and parties every transaction depends on — products with barcodes and tax, units with conversions, categories, and customer / supplier registration with opening balances."
-            planned={[
-                {
-                    group: 'Catalogue',
-                    items: [
-                        'Products — barcode, price, tax, weight-based flag, reorder level',
-                        'Categories — grocery, dairy, produce, frozen, beverages, …',
-                        'Units of measure + conversions (kg, g, pcs, box, …)',
-                    ],
-                },
-                {
-                    group: 'Labels',
-                    items: [
-                        'Barcode & QR generation with label preview',
-                    ],
-                },
-                {
-                    group: 'Parties',
-                    items: [
-                        'Customer registration — credit limit & opening balance',
-                        'Supplier registration — profile & opening balance',
-                    ],
-                },
-                {
-                    group: 'Setup',
-                    items: [
-                        'Per-branch minimum stock levels & price overrides',
-                        'Opening-data CSV import',
-                    ],
-                },
-            ]}
-            scenarios={['New product created with barcode, tax and a per-branch min level']}
-        />
+        <AppLayout title="Master Data" subtitle="The catalogue & parties every transaction depends on">
+            <MasterDataTabs />
+
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {sections.map((s) => (
+                    <Link
+                        key={s.key}
+                        href={s.href}
+                        className="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-brand-300 hover:shadow-md"
+                    >
+                        <div className="flex items-start justify-between">
+                            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
+                                <Icon name={s.icon} className="h-6 w-6" />
+                            </div>
+                            <span className="text-2xl font-extrabold text-brand-900">
+                                {formatNumber(s.count)}
+                            </span>
+                        </div>
+                        <h3 className="mt-3 text-sm font-bold text-slate-800 group-hover:text-brand-700">
+                            {s.label}
+                        </h3>
+                        <p className="mt-0.5 text-xs text-slate-500">{s.desc}</p>
+                    </Link>
+                ))}
+            </div>
+        </AppLayout>
     );
 }

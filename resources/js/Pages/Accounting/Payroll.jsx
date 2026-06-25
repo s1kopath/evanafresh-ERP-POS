@@ -5,7 +5,7 @@ export default function PayrollIndex() {
         <ModuleStub
             title="Payroll & Employees"
             subtitle="Staff records & automated monthly salary"
-            icon="👥"
+            icon="payroll"
             phase="Phase 2 · 7"
             summary="Maintain employee records per branch and run automated monthly payroll that posts straight to the general ledger and daily cash book."
             planned={[

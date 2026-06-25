@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Head, Link, router, usePage } from '@inertiajs/react';
+import { Menu, X } from 'lucide-react';
 import NavLink from '@/Components/NavLink';
+import Icon from '@/Components/Icon';
 import { useFlashToasts } from '@/Components/ui/Toast';
 import { useAuth } from '@/lib/auth';
 import { cn } from '@/lib/cn';
@@ -8,38 +10,38 @@ import { cn } from '@/lib/cn';
 const navSections = [
     {
         section: 'Overview',
-        items: [{ label: 'Dashboard', href: '/', icon: '📊', exact: true }],
+        items: [{ label: 'Dashboard', href: '/', icon: 'dashboard', exact: true }],
     },
     {
         section: 'Operations',
         items: [
-            { label: 'POS Terminal', href: '/pos', icon: '🛒', perm: 'pos.sell' },
-            { label: 'Inventory', href: '/inventory', icon: '📦', perm: 'inventory.view' },
-            { label: 'Expiry', href: '/expiry', icon: '⏳', perm: 'expiry.view' },
-            { label: 'Purchasing', href: '/purchasing', icon: '🚚', perm: 'purchasing.view' },
-            { label: 'Reorder', href: '/reorder', icon: '🔄', perm: 'reorder.view' },
+            { label: 'POS Terminal', href: '/pos', icon: 'pos', perm: 'pos.sell' },
+            { label: 'Inventory', href: '/inventory', icon: 'inventory', perm: 'inventory.view' },
+            { label: 'Expiry', href: '/expiry', icon: 'expiry', perm: 'expiry.view' },
+            { label: 'Purchasing', href: '/purchasing', icon: 'purchasing', perm: 'purchasing.view' },
+            { label: 'Reorder', href: '/reorder', icon: 'reorder', perm: 'reorder.view' },
         ],
     },
     {
         section: 'Finance',
         items: [
-            { label: 'Customer Ledger', href: '/ledgers/customers', icon: '🧾', perm: 'ledgers.view' },
-            { label: 'Supplier Ledger', href: '/ledgers/suppliers', icon: '📒', perm: 'ledgers.view' },
-            { label: 'Accounting', href: '/accounting', icon: '💰', perm: 'accounting.view' },
-            { label: 'Payroll', href: '/payroll', icon: '👥', perm: 'payroll.manage' },
+            { label: 'Customer Ledger', href: '/ledgers/customers', icon: 'ledger-customer', perm: 'ledgers.view' },
+            { label: 'Supplier Ledger', href: '/ledgers/suppliers', icon: 'ledger-supplier', perm: 'ledgers.view' },
+            { label: 'Accounting', href: '/accounting', icon: 'accounting', perm: 'accounting.view' },
+            { label: 'Payroll', href: '/payroll', icon: 'payroll', perm: 'payroll.manage' },
         ],
     },
     {
         section: 'Insights',
-        items: [{ label: 'Reports', href: '/reports', icon: '📈', perm: 'reports.view' }],
+        items: [{ label: 'Reports', href: '/reports', icon: 'reports', perm: 'reports.view' }],
     },
     {
         section: 'Admin',
         items: [
-            { label: 'Master Data', href: '/master-data', icon: '🗂️', perm: 'masterdata.manage' },
-            { label: 'Branches', href: '/branches', icon: '🏢', perm: 'branches.manage' },
-            { label: 'Settings', href: '/settings', icon: '⚙️', perm: 'settings.manage' },
-            { label: 'UI Kit', href: '/ui-kit', icon: '🧩', ownerOnly: true },
+            { label: 'Master Data', href: '/master-data', icon: 'master-data', perm: 'masterdata.manage' },
+            { label: 'Branches', href: '/branches', icon: 'branches', perm: 'branches.manage' },
+            { label: 'Settings', href: '/settings', icon: 'settings', perm: 'settings.manage' },
+            { label: 'UI Kit', href: '/ui-kit', icon: 'ui-kit', ownerOnly: true },
         ],
     },
 ];
@@ -103,8 +105,8 @@ export default function AppLayout({ title, subtitle, actions, children }) {
                 )}
             >
                 <div className="flex items-center gap-3 px-5 py-5">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-500 text-xl">
-                        🥬
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-500 text-white">
+                        <Icon name="brand" className="h-6 w-6" />
                     </div>
                     <div className="leading-tight">
                         <div className="text-sm font-extrabold tracking-wide">Evana Fresh</div>
@@ -115,7 +117,7 @@ export default function AppLayout({ title, subtitle, actions, children }) {
                         onClick={() => setOpen(false)}
                         aria-label="Close menu"
                     >
-                        ✕
+                        <X className="h-4 w-4" />
                     </button>
                 </div>
 
@@ -134,8 +136,37 @@ export default function AppLayout({ title, subtitle, actions, children }) {
                     ))}
                 </nav>
 
+                {/* Branch context for phones — the topbar switcher is hidden below md. */}
+                <div className="border-t border-brand-800/60 px-3 py-3 md:hidden">
+                    <div className="px-1 pb-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-brand-200/50">
+                        Branch
+                    </div>
+                    {isOwner ? (
+                        <select
+                            value={currentBranch ?? ''}
+                            onChange={(e) => switchBranch(e.target.value)}
+                            className="w-full rounded-lg border border-brand-700 bg-brand-800 px-2 py-2 text-sm font-medium text-white"
+                            aria-label="Switch branch"
+                        >
+                            <option value="">All branches</option>
+                            {branches.map((b) => (
+                                <option key={b.id} value={b.id}>
+                                    {b.code} — {b.name}
+                                </option>
+                            ))}
+                        </select>
+                    ) : (
+                        <div className="flex items-center gap-2 rounded-lg border border-brand-700 px-3 py-2 text-sm text-brand-100">
+                            <Icon name="store" className="h-4 w-4" />
+                            <span className="font-medium">
+                                {user?.branch ? `${user.branch.code} — ${user.branch.name}` : '—'}
+                            </span>
+                        </div>
+                    )}
+                </div>
+
                 <div className="border-t border-brand-800/60 px-5 py-3 text-[10px] uppercase tracking-[0.15em] text-brand-200/50">
-                    EIBMS · Phase 1 — Auth &amp; RBAC
+                    EIBMS · Phase 2 — Master Data
                 </div>
             </aside>
 
@@ -148,9 +179,7 @@ export default function AppLayout({ title, subtitle, actions, children }) {
                         onClick={() => setOpen(true)}
                         aria-label="Open menu"
                     >
-                        <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                            <path strokeLinecap="round" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
+                        <Menu className="h-5 w-5" />
                     </button>
 
                     <div className="min-w-0 flex-1">
@@ -177,7 +206,7 @@ export default function AppLayout({ title, subtitle, actions, children }) {
                         </select>
                     ) : (
                         <div className="hidden items-center gap-2 rounded-lg border border-slate-200 px-3 py-1.5 text-xs text-slate-600 md:flex">
-                            <span>🏬</span>
+                            <Icon name="store" className="h-4 w-4" />
                             <span className="font-medium">
                                 {user?.branch ? `${user.branch.code} — ${user.branch.name}` : '—'}
                             </span>

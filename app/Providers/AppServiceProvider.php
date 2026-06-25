@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use App\Support\CurrentBranch;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,6 +23,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Resolve every authorization ability through the RBAC permission set, so
+        // `can:masterdata.manage` middleware and $user->can('…') mirror the client
+        // `can()` helper. Owners hold everything (handled in hasPermission()).
+        Gate::before(fn (User $user, string $ability) => $user->hasPermission($ability) ?: null);
     }
 }

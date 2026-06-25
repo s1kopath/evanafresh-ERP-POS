@@ -5,7 +5,7 @@ export default function InventoryIndex() {
         <ModuleStub
             title="Inventory"
             subtitle="Real-time stock, expiry & valuation across branches"
-            icon="📦"
+            icon="inventory"
             phase="Phase 3"
             summary="Live stock that updates the instant a sale or purchase posts. Tracks batches and expiry, flags low stock and near-expiry value-at-risk, and reports fast / slow / dead movers."
             planned={[

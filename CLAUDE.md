@@ -30,6 +30,10 @@ reorder, customer/supplier ledgers, accounting, multi-branch management, reporti
   Offline POS ships as an **Electron desktop app** with a local (encrypted SQLite) store on
   the device that syncs to the server; it runs the same online and offline (Phase 4b).
 - Frontend is **JavaScript / JSX — not TypeScript**.
+- **Key libs:** `lucide-react` (all icons — no emoji), `jsbarcode` + `qrcode` (product-label
+  barcode/QR). Inertia pages are **lazy-resolved** in `app.jsx` (`resolvePageComponent`), so each
+  screen is its own chunk and heavy deps stay out of the main bundle. Product images are optimized
+  on upload via PHP **GD** (`App\Support\ImageOptimizer`) — no extra package.
 
 ## Run it
 ```bash
@@ -39,6 +43,7 @@ php artisan serve
 npm run dev           # Vite dev server (HMR)
 npm run build         # production assets
 php artisan migrate
+php artisan storage:link   # one-time — serves uploaded product images at /storage
 ```
 If `public/hot` exists but no Vite dev server is running, delete it (it forces dev-mode
 asset loading). `npm run build` produces the manifest used in production.
@@ -70,6 +75,12 @@ desktop/                                         # Electron offline POS terminal
 ### Shared UI kit (use these — don't reinvent)
 Reusable components live in `resources/js/Components/ui/`. Open **`/ui-kit`** in the app for a
 live reference of all of them.
+- **Icons — NO EMOJI anywhere in the UI (hard rule; keep it professional).** Use SVG icons via
+  `@/Components/Icon` → `<Icon name="products" className="h-5 w-5" />`, backed by `lucide-react`.
+  `Icon.jsx` holds the semantic name→component map; add new entries there and reference icons by
+  name (so server-provided props like the Master Data hub can pick one too). For one-off control
+  glyphs (modal/toast close, status ticks) import the lucide icon directly
+  (`import { X } from 'lucide-react'`). Never reintroduce emoji as icons or bullets.
 - `Button` (`variant`, `size`, `loading`) + `buttonVariants()` for styled `<Link>`s.
 - `Card`, `Badge`, `EmptyState`, `Spinner`.
 - `Skeleton`, `SkeletonText`, `SkeletonCard`, `SkeletonTable` — show while data loads.
@@ -85,16 +96,39 @@ live reference of all of them.
 - Helpers: `@/lib/cn` (classnames) and `@/lib/format` (`formatMoney` (SAR), `formatNumber`,
   `formatDate`, `formatDateTime`).
 - **Layout is responsive:** sidebar is a static rail on `lg+` and an off-canvas drawer below
-  `lg` (hamburger in the topbar). Keep new screens mobile-first; test at a narrow width.
+  `lg` (hamburger in the topbar). The branch switcher lives in the topbar at `md+` and in the
+  drawer below `md`. Keep new screens mobile-first; test at a narrow width.
+- **Every screen must be mobile-responsive — not just the layout shell. This is a hard
+  requirement; verify each new screen at ~375px before ticking it off.**
+  - **Tables:** wrap in `overflow-x-auto`, *and* progressively hide secondary columns on small
+    screens with `hidden sm:table-cell` / `hidden md:table-cell` / `hidden lg:table-cell` (apply
+    the class to both the `<th>` and its `<td>`s). Always keep the identity column, the key
+    metric, status, and the row actions visible on a phone.
+  - **Forms/grids:** never ship a bare `grid-cols-2`/`grid-cols-3` — go mobile-first
+    (`grid-cols-1 sm:grid-cols-2`). Modals are already bottom-sheets on mobile via `Modal`.
+  - Prefer the shared `Card`/`Badge`/`EmptyState`/`Pagination` which are already fluid.
 
 ### Backend
 - Laravel 13 structure: register middleware in `bootstrap/app.php` (no `Kernel.php`).
 - Each module: controller + FormRequest + Policy. Keep business logic in service classes
   (e.g. `App\Services\Sales\SaleService`).
-- **Branch scoping:** almost every table has `branch_id`; enforce isolation with a global
-  scope + the current-branch context. Owners bypass to see all branches.
+- **Branch scoping:** almost every transactional table has `branch_id`; enforce isolation with a
+  global scope (`BelongsToBranch`) + the current-branch context. Owners bypass to see all branches.
+- **Company scoping:** shared master data (products, categories, units, tax rates, customers,
+  suppliers, employees, settings) is **company-wide, not branch-scoped** — use the
+  `BelongsToCompany` trait (stamps + filters by the user's `company_id`). Per-branch differences
+  live in pivots (e.g. `product_branch` for min levels & price overrides).
+- **Server-side permissions:** a `Gate::before` in `AppServiceProvider` resolves every ability
+  through the RBAC permission set, so route middleware `->middleware('can:masterdata.manage')`
+  mirrors the client `can()` helper (owners bypass). Gate at the route-group level.
 - **Money:** never floats. Use `decimal(15,2)` or integer minor units (halalas). Currency
-  **SAR**, VAT **15%**. One money helper per side.
+  **SAR**, VAT **15%**. One money helper per side — `App\Support\Money` (PHP), `@/lib/format` (JS).
+- **Product images:** optional `products.image_path` on the `public` disk; uploads run through
+  `App\Support\ImageOptimizer` (GD — downscale ≤600px, re-encode WebP, EXIF-orient). The model's
+  `imageUrl()` returns a **root-relative** `/storage/…` URL (not `Storage::url()`, which prefixes
+  `APP_URL` and breaks when the dev host/port differs); the `<ProductImage>` client component
+  falls back to a placeholder so a missing/invalid file never renders a broken image. Needs
+  `php artisan storage:link`.
 - **Stock:** model every change as an immutable `stock_movements` row; `stock_levels` is a
   cached projection. Valuation default = weighted average.
 - **Ledgers:** append-only; corrections are reversing entries; every financial write logs audit.

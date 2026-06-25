@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { X } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import Button from './Button';
 
@@ -43,7 +44,7 @@ export default function Modal({ open, onClose, title, children, footer, size = '
                             className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-600"
                             aria-label="Close"
                         >
-                            ✕
+                            <X className="h-4 w-4" />
                         </button>
                     </div>
                 )}

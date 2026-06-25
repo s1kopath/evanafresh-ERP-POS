@@ -1,5 +1,6 @@
 import { Head, useForm } from '@inertiajs/react';
 import Button from '@/Components/ui/Button';
+import Icon from '@/Components/Icon';
 import { FormField, Input, InputError } from '@/Components/ui/Form';
 
 export default function Login() {
@@ -21,7 +22,9 @@ export default function Login() {
             <div className="w-full max-w-md">
                 {/* Brand */}
                 <div className="mb-6 flex items-center justify-center gap-3 text-white">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-500 text-2xl">🥬</div>
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-500 text-white">
+                        <Icon name="brand" className="h-7 w-7" />
+                    </div>
                     <div className="leading-tight">
                         <div className="text-lg font-extrabold tracking-wide">Evana Fresh</div>
                         <div className="text-[11px] uppercase tracking-[0.18em] text-brand-200/70">ERP &amp; POS</div>

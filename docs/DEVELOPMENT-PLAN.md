@@ -110,12 +110,14 @@ Company ─┬─ Branch ──┬─ Terminal (POS)
 ### Phase 2 — Master data & settings
 **Why:** all transactional modules depend on the catalogue and parties.
 - **Data model:** `categories`, `units` (+ `unit_conversions`), `products`
-  (barcode, sell price, tax, `is_weight_based`, reorder level), `product_branch`
-  (per-branch min levels & price overrides), `customers` (credit limit, opening balance),
-  `suppliers` (opening balance), `employees` (salary, join date, branch, status — feeds payroll),
-  `tax_rates`, `settings` (store header, ZATCA TRN, thresholds).
+  (barcode, sell price, tax, `is_weight_based`, reorder level, optional `image_path`),
+  `product_branch` (per-branch min levels & price overrides), `customers` (credit limit,
+  opening balance), `suppliers` (opening balance), `employees` (salary, join date, branch,
+  status — feeds payroll), `tax_rates`, `settings` (store header, ZATCA TRN, thresholds).
+  Master data is **company-scoped** (`BelongsToCompany`), not branch-scoped.
 - **Backend:** CRUD controllers + form requests + policies for each; barcode/QR
-  generation; CSV import for opening data; opening-balance posting into ledgers.
+  generation; product image upload optimized server-side via GD (`App\Support\ImageOptimizer`,
+  WebP, ≤600px); CSV import for opening data; opening-balance posting into ledgers.
 - **Frontend:** index/create/edit pages (reusable table + form components),
   barcode label preview, settings screens (replaces the Settings stub).
 - **Acceptance:** can create products/customers/suppliers/employees, set per-branch min levels,

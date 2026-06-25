@@ -1,4 +1,6 @@
+import { Check, ChevronRight } from 'lucide-react';
 import AppLayout from '@/Layouts/AppLayout';
+import Icon from '@/Components/Icon';
 
 function PhaseBadge({ phase }) {
     return (
@@ -19,8 +21,8 @@ export default function ModuleStub({ title, subtitle, icon, phase, summary, plan
         <AppLayout title={title} subtitle={subtitle} actions={<PhaseBadge phase={phase} />}>
             <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                 <div className="flex items-start gap-4">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-2xl">
-                        {icon}
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
+                        <Icon name={icon} className="h-6 w-6" />
                     </div>
                     <div>
                         <h2 className="text-base font-bold text-brand-900">Module blueprint</h2>
@@ -36,7 +38,7 @@ export default function ModuleStub({ title, subtitle, icon, phase, summary, plan
                         <ul className="mt-3 space-y-2">
                             {group.items.map((item) => (
                                 <li key={item} className="flex items-start gap-2 text-sm text-slate-700">
-                                    <span className="mt-0.5 text-brand-600">✓</span>
+                                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-600" strokeWidth={2.5} />
                                     <span>{item}</span>
                                 </li>
                             ))}
@@ -51,7 +53,7 @@ export default function ModuleStub({ title, subtitle, icon, phase, summary, plan
                     <ul className="mt-3 grid gap-2 sm:grid-cols-2">
                         {scenarios.map((s) => (
                             <li key={s} className="flex items-start gap-2 text-sm text-brand-900">
-                                <span className="mt-0.5">▸</span>
+                                <ChevronRight className="mt-0.5 h-4 w-4 shrink-0 text-brand-600" strokeWidth={2.5} />
                                 <span>{s}</span>
                             </li>
                         ))}

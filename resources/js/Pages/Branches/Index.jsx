@@ -5,7 +5,7 @@ export default function BranchesIndex() {
         <ModuleStub
             title="Branches & Transfers"
             subtitle="Multi-branch control & inter-branch stock transfers"
-            icon="🏢"
+            icon="branches"
             phase="Phase 1 · 3"
             summary="Run all current and future branches from one login, move stock between them with a request / approve workflow, and roll every branch up into consolidated reporting."
             planned={[

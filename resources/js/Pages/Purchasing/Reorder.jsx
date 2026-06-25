@@ -5,7 +5,7 @@ export default function ReorderIndex() {
         <ModuleStub
             title="Reorder Planning"
             subtitle="Auto reorder lists & one-click purchase orders"
-            icon="🔄"
+            icon="reorder"
             phase="Phase 5"
             summary="Turn looming stock-outs into purchase orders automatically — build reorder lists from min levels and sales trends, pick the preferred supplier, then share or convert to a PO in one click."
             planned={[

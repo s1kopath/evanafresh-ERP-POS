@@ -5,7 +5,7 @@ export default function PosIndex() {
         <ModuleStub
             title="POS Terminal"
             subtitle="Fast day-to-day selling — barcode, weight & credit"
-            icon="🛒"
+            icon="pos"
             phase="Phase 4"
             summary="The point-of-sale till for cashiers: scan or search items, weigh produce, take mixed payments, handle returns, and print a ZATCA-compliant e-invoice. Ships as an installable Electron desktop app that keeps selling with no internet and syncs to HQ on reconnect."
             planned={[

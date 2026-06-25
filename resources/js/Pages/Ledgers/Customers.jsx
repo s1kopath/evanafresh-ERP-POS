@@ -5,7 +5,7 @@ export default function CustomersLedger() {
         <ModuleStub
             title="Customer Ledger"
             subtitle="Credit sales, dues & collections"
-            icon="🧾"
+            icon="ledger-customer"
             phase="Phase 6"
             summary="A running account for every credit customer: invoices raised at the till, payments collected against outstanding dues, and printable statements with the live balance."
             planned={[

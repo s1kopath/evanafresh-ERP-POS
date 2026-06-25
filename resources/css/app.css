@@ -38,3 +38,95 @@
         transform: translateY(0) scale(1);
     }
 }
+
+/* ---- Product label printing ----------------------------------------------
+   The label screen renders a print sheet (#label-sheet) into <body> via a
+   portal. On screen it's hidden (we show a single preview instead); when
+   printing we hide the Inertia app shell (#app) and tile the labels in a grid,
+   so the sidebar/topbar never reach the printer. */
+.label-cell {
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 8px 10px;
+    text-align: center;
+}
+
+.label-cell svg {
+    max-width: 100%;
+    height: auto;
+}
+
+#label-sheet {
+    display: none;
+}
+
+@media print {
+    #app {
+        display: none !important;
+    }
+
+    #label-sheet {
+        display: grid !important;
+        grid-template-columns: repeat(var(--label-cols, 1), minmax(0, 1fr));
+        gap: 4mm;
+        color: #000;
+    }
+
+    .label-cell {
+        break-inside: avoid;
+    }
+
+    .label-cell .label-price {
+        color: #000 !important;
+    }
+
+    @page {
+        margin: 8mm;
+    }
+}
+
+/* ---- Themed scrollbars ----------------------------------------------------
+   Brand-tinted, slim scrollbars across the app. Firefox uses scrollbar-color;
+   WebKit/Blink use the pseudo-elements. The thumb has a transparent border with
+   background-clip so it reads as a slim pill with breathing room. */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-brand-300) transparent;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--color-brand-300);
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-brand-500);
+}
+
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+/* Dark sidebar rail — a softer, translucent thumb over brand-900. */
+aside {
+    scrollbar-color: color-mix(in srgb, var(--color-brand-200) 45%, transparent) transparent;
+}
+
+aside ::-webkit-scrollbar-thumb {
+    background-color: color-mix(in srgb, var(--color-brand-200) 45%, transparent);
+}
+
+aside ::-webkit-scrollbar-thumb:hover {
+    background-color: color-mix(in srgb, var(--color-brand-200) 75%, transparent);
+}

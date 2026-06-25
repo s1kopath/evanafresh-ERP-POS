@@ -5,7 +5,7 @@ export default function ReportsIndex() {
         <ModuleStub
             title="Reports & Analytics"
             subtitle="Sales, profitability & branch performance"
-            icon="📈"
+            icon="reports"
             phase="Phase 8"
             summary="Drillable, exportable insight across the business — sales over time, product profitability, best-selling vs. slow movers, and branch-by-branch performance."
             planned={[

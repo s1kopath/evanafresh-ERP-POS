@@ -5,7 +5,7 @@ export default function AccountingIndex() {
         <ModuleStub
             title="Accounting"
             subtitle="Expenses, payroll, cash/bank & financial statements"
-            icon="💰"
+            icon="accounting"
             phase="Phase 7"
             summary="The financial books that every sale and purchase feeds into — expenses, payroll, cash and bank, and full statements (P&L, Balance Sheet) per branch and consolidated."
             planned={[
